@@ -231,7 +231,7 @@ async function fetchItems(reset = false) {
       },
       headers: {
         accept: 'application/json',
-        'Client-ID': '239474317514292'
+        'Client-ID': '145171853402688'
       }
     })
 
@@ -259,6 +259,7 @@ async function fetchItems(reset = false) {
     } else {
       page.value += 1
     }
+    initObserver()
   } catch (error) {
     console.error('Failed to fetch items:', error)
     hasMore.value = false
@@ -271,9 +272,7 @@ watch(filters, () => {
   fetchItems(true)
 }, { deep: true })
 
-onMounted(() => {
-  fetchItems(true)
-
+const initObserver = () => {
   const observer = new IntersectionObserver(
     (entries) => {
       const [entry] = entries
@@ -290,6 +289,11 @@ onMounted(() => {
   if (bottomObserver.value) {
     observer.observe(bottomObserver.value)
   }
+}
+
+onMounted(() => {
+  fetchItems(true)
+  initObserver()
 })
 </script>
 
